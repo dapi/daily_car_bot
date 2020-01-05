@@ -1,12 +1,9 @@
 class WebhookController < Telegram::Bot::UpdatesController
-  include Telegram::Bot::UpdatesController::Session
   include Telegram::Bot::UpdatesController::MessageContext
   include Telegram::Bot::UpdatesController::CallbackQueryContext
   include CurrentUser
   include TelegramHelpers
   include HandleErrors
-
-  use_session!
 
   def message(message)
     stored_message = store_message message
@@ -25,7 +22,56 @@ class WebhookController < Telegram::Bot::UpdatesController
     edit_message :text, text: "Вы выбрали #{data}"
   end
 
-  def start!(data = nil, *)
+  def set_next_maintenance!(mileage)
+    current_car.update! next_maintenance_mileage: mileage
+    save_context :set_next_maintenance!
+    respond_with :message, text: maintenance_message, parse_mode: :Markdown
+  end
+
+  def set_mileage!(mileage)
+    current_user.messages.create!(
+      value: mileage,
+      kind: :mileage,
+      telegram_message_id: payload['message_id'],
+      telegram_date: Time.at(payload['date']).to_datetime
+    )
+    current_car.update! current_mileage: mileage
+    save_context :set_next_maintenance!
+    respond_with :message, text: mileage_message, parse_mode: :Markdown
+  end
+
+  def set_insurance_date!(date)
+    current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
+    save_context :set_mileage!
+    respond_with :message, text: insurance_message, parse_mode: :Markdown
+  end
+
+  def set_number!(number = nil)
+    current_car.update! number: number == '0' ? nil : number
+    save_context :set_insurance_date!
+    respond_with :message, text: number_message, parse_mode: :Markdown
+  end
+
+  def set_model!(model = nil, mark = nil, year = nil)
+    if model.present? && mark.present? && year.present?
+      if current_car.present?
+        current_car.update model: model, mark: mark, year: year
+      else
+        current_user.create_car! model: model, mark: mark, year: year
+      end
+
+      save_context :set_number!
+      respond_with :message, text: car_message, parse_mode: :Markdown
+    else
+      save_context :set_model!
+      respond_with :message,
+        text: 'Что-то вы не то мне говорите. Напишите марку, модель и год производства вашего автомобиля. Например: Nissan X-Trail 2010'
+    end
+  end
+
+  def start!(*)
+    # if current_car.present?
+    save_context :set_model!
     respond_with :message, text: start_message, parse_mode: :Markdown
   end
 
@@ -75,8 +121,55 @@ class WebhookController < Telegram::Bot::UpdatesController
 
 Я – бот-дневник, помогаю вести журнал обслуживания твоего авто. Со мной ты не пропустишь техобслуживание, осмотр, обновление страховки, будешь знать стоимость владения автомобилем и многое другое.
 
-Сначала я задам тебе 5 вопросов о твоём авто, затем расскажу подробнее как со мной общаться. Погнали!
+Сначала я задам тебе 5 вопросов о твоём авто, а затем расскажу подробнее как со мной общаться.
+
+Поехали, вопрос N1: Напиши через пробел марку, модель и год выпуска твоего авто.
+
+Например:
+
+```
+Nissan X-Trail 2010
+```
 }
+  end
+
+  def car_message
+    %{
+Я запомнил, что ваш автомобиль: #{current_car.humanized}.
+
+Вопрос N2. Напишите регистрационный номер вашего авто без пробелов, так мы сможем сообщать вам о поступащюих штрафах. Например: А123БВ21.
+Введите 0, если вы не хотите говорить.
+}
+  end
+
+  def number_message
+    %{
+    Я запомнил, что регистрационный номер вашего авто: #{current_car.number}.
+
+    Вопрос N3. Напишите дату окончания действия страховки в формате ЧИСЛО-МЕСЯЦ-ГОД. Например: 31-12-2010. Введите 0, если ее у вас нет или она закончилась.
+    }
+  end
+
+  def insurance_message
+    %{
+Понятно, страховка заканчивается #{current_car.insurance_end_date}.
+
+Вопрос N4. Напишите текущий пробег авто в километрах. Например: `65000`
+    }
+  end
+
+  def mileage_message
+    %{
+Ага, текущий пробег авто #{current_car.current_mileage} км. Так и запишем.
+
+Последний вопрос, на каком пробеге планируете делать следующее техническое обслуживание? Напишите в километрах. Например: `80000`
+    }
+  end
+
+  def maintenance_message
+    %{
+Спасибо, значит следующее ТО будет через #{current_car.next_maintenance_mileage_distance} км. Будем ждать!
+    }
   end
 
   def help_message
@@ -94,6 +187,7 @@ class WebhookController < Telegram::Bot::UpdatesController
 Так я пойму что ты поменял шаровую и это тебе обошлось в 12700 рублей.
 
 Погнали!
+
 }
   end
 

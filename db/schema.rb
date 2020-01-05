@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_05_174022) do
+ActiveRecord::Schema.define(version: 2020_01_05_193158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,9 @@ ActiveRecord::Schema.define(version: 2020_01_05_174022) do
     t.string "vin"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.date "insurance_end_date"
+    t.integer "next_maintenance_mileage"
+    t.integer "current_mileage"
     t.index ["user_id"], name: "index_cars_on_user_id"
   end
 

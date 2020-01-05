@@ -28,6 +28,10 @@ class WebhookController < Telegram::Bot::UpdatesController
     respond_with :message, text: maintenance_message, parse_mode: :Markdown
   end
 
+  def info!(*)
+    respond_with :message, text: info_message, parse_mode: :Markdown
+  end
+
   def set_mileage!(mileage)
     current_user.messages.create!(
       value: mileage,
@@ -169,6 +173,19 @@ Nissan X-Trail 2010
   def maintenance_message
     %{
 Спасибо, значит следующее ТО будет через #{current_car.next_maintenance_mileage_distance} км. Будем ждать!
+    }
+  end
+
+  def info_message
+    return 'Я пока ничего не знаю о твоём автомобиле' unless current_car.present?
+    %{
+Марка: #{current_car.mark}
+Модель: #{current_car.model}
+Год выпуска: #{current_car.year}
+---
+Текущий пробег: #{current_car.current_mileage || '???'} км
+Следующее ТО: #{current_car.next_maintenance_mileage || '???'} км (#{current_car.next_maintenance_mileage_distance || '???'} км)
+Страховка заканчивается: #{current_car.insurance_end_date || '???'}
     }
   end
 

@@ -1,4 +1,4 @@
-class Telegram::WebhookController < Telegram::Bot::UpdatesController
+class WebhookController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::Session
   include Telegram::Bot::UpdatesController::MessageContext
   include Telegram::Bot::UpdatesController::CallbackQueryContext

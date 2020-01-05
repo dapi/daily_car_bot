@@ -2,7 +2,7 @@ class Car < ApplicationRecord
   belongs_to :user
 
   def humanized
-    [mark, model, year].join ' '
+    [mark, model, year].join(' ') + ' года'
   end
 
   def next_maintenance_mileage_distance

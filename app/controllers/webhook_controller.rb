@@ -5,26 +5,20 @@ class WebhookController < Telegram::Bot::UpdatesController
   include TelegramHelpers
   include HandleErrors
 
+  # after_action вызывается уже после того как в телеграм ушет ответ от action.
+  # Это хороший способ послать еще одно сообщение, например с вопросом после ответа.
+  after_action do
+    SendMessageJob.set(wait: @later_wait || 2.seconds).perform_later from['id'], text: @later_message, parse_mode: :Markdown if @later_message.present?
+  end
+
   def message(message)
     stored_message = store_message message
     respond_with :message, text: "Понятно, так и запишем: #{stored_message.humanized}"
   end
 
-  def chosen_inline_result(result_id, query)
-    respond_with :message, text: 'Неизвестный тип сообщение chosen_inline_result'
-  end
-
-  def inline_query(query, offset)
-    respond_with :message, text: 'Неизвестный тип сообщение inline_query'
-  end
-
-  def callback_query(data)
-    edit_message :text, text: "Вы выбрали #{data}"
-  end
-
   def set_next_maintenance!(mileage)
     current_car.update! next_maintenance_mileage: mileage
-    save_context :set_next_maintenance!
+    @later_message = "Вопросы закончились. Дай команду /info чтобы посмотреть что я знаю о твоём авто"
     respond_with :message, text: maintenance_message, parse_mode: :Markdown
   end
 
@@ -41,18 +35,21 @@ class WebhookController < Telegram::Bot::UpdatesController
     )
     current_car.update! current_mileage: mileage
     save_context :set_next_maintenance!
+    @later_message = next_maintenance_question
     respond_with :message, text: mileage_message, parse_mode: :Markdown
   end
 
   def set_insurance_date!(date)
     current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
     save_context :set_mileage!
+    @later_message = mileage_question
     respond_with :message, text: insurance_message, parse_mode: :Markdown
   end
 
   def set_number!(number = nil)
     current_car.update! number: number == '0' ? nil : number
     save_context :set_insurance_date!
+    @later_message = insurance_question
     respond_with :message, text: number_message, parse_mode: :Markdown
   end
 
@@ -65,17 +62,20 @@ class WebhookController < Telegram::Bot::UpdatesController
       end
 
       save_context :set_number!
+      @later_message = number_question
       respond_with :message, text: car_message, parse_mode: :Markdown
     else
       save_context :set_model!
       respond_with :message,
-        text: 'Что-то вы не то мне говорите. Напишите марку, модель и год производства вашего автомобиля. Например: Nissan X-Trail 2010'
+        text: 'Что-то вы не то мне говорите. Напишите марку, модель и год производства вашего автомобиля. Например: `Nissan X-Trail 2010`'
     end
   end
 
   def start!(*)
     # if current_car.present?
     save_context :set_model!
+    @later_wait = 5.seconds
+    @later_message = car_question
     respond_with :message, text: start_message, parse_mode: :Markdown
   end
 
@@ -125,55 +125,48 @@ class WebhookController < Telegram::Bot::UpdatesController
 
 Я – бот-дневник, помогаю вести журнал обслуживания твоего авто. Со мной ты не пропустишь техобслуживание, осмотр, обновление страховки, будешь знать стоимость владения автомобилем и многое другое.
 
-Сначала я задам тебе 5 вопросов о твоём авто, а затем расскажу подробнее как со мной общаться.
-
-Поехали, вопрос N1: Напиши через пробел марку, модель и год выпуска твоего авто.
-
-Например:
-
-```
-Nissan X-Trail 2010
-```
+Для начала я задам тебе 5 вопросов о твоём авто: марку, модель и год производства, регистрационный номер, текущий пробег, следующее ТО и дату окончания страховки. Поехали!
 }
+  end
+
+  def car_question
+    "Напиши через пробел марку, модель и год выпуска твоего авто. Например: `Nissan X-Trail 2010`"
   end
 
   def car_message
-    %{
-Я запомнил, что ваш автомобиль: #{current_car.humanized}.
+   "Отлично! Теперь я знаю что у тебя #{current_car.humanized}."
+  end
 
-Вопрос N2. Напишите регистрационный номер вашего авто без пробелов, так мы сможем сообщать вам о поступащюих штрафах. Например: А123БВ21.
-Введите 0, если вы не хотите говорить.
-}
+  def number_question
+    "Вопрос 2 из 5. Напиши регистрационный номер авто без пробелов, так я смогу сообщать о поступащюих штрафах. Например: `А123БВ21`"
   end
 
   def number_message
-    %{
-    Я запомнил, что регистрационный номер вашего авто: #{current_car.number}.
+    "Регистрационный номер автомобиля: #{current_car.number}."
+  end
 
-    Вопрос N3. Напишите дату окончания действия страховки в формате ЧИСЛО-МЕСЯЦ-ГОД. Например: 31-12-2010. Введите 0, если ее у вас нет или она закончилась.
-    }
+  def insurance_question
+    "Вопрос 3 из 5. Напиши дату окончания действия текущей страховки в формате ЧИСЛО-МЕСЯЦ-ГОД. Например: `31-12-2010`. Введи 0, если её нет или она закончилась."
   end
 
   def insurance_message
-    %{
-Понятно, страховка заканчивается #{current_car.insurance_end_date}.
+    "Понятно, страховка заканчивается #{l current_car.insurance_end_date}."
+  end
 
-Вопрос N4. Напишите текущий пробег авто в километрах. Например: `65000`
-    }
+  def mileage_question
+    "Вопрос 4 из 5 (предпоследний). Напишите текущий пробег авто в километрах. Например: `65000`"
   end
 
   def mileage_message
-    %{
-Ага, текущий пробег авто #{current_car.current_mileage} км. Так и запишем.
+    "Ага, текущий пробег авто #{current_car.current_mileage} км. Так и запишем."
+  end
 
-Последний вопрос, на каком пробеге планируете делать следующее техническое обслуживание? Напишите в километрах. Например: `80000`
-    }
+  def next_maintenance_question
+    "Последний вопрос, на каком пробеге планируется делать следующее Техническое Обслуживание? Напиши в километрах. Например: `80000`"
   end
 
   def maintenance_message
-    %{
-Спасибо, значит следующее ТО будет через #{current_car.next_maintenance_mileage_distance} км. Будем ждать!
-    }
+    "Спасибо, значит следующее ТО будет через #{current_car.next_maintenance_mileage_distance} км. Будем ждать!"
   end
 
   def info_message

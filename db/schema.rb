@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_05_163432) do
+ActiveRecord::Schema.define(version: 2020_01_05_174022) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(version: 2020_01_05_163432) do
     t.index ["user_id"], name: "index_cars_on_user_id"
   end
 
+  create_table "messages", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.decimal "value"
+    t.string "text"
+    t.integer "kind", default: 0, null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_messages_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "uuid_generate_v4()" }, force: :cascade do |t|
     t.string "email"
     t.string "crypted_password"
@@ -42,7 +52,9 @@ ActiveRecord::Schema.define(version: 2020_01_05_163432) do
     t.string "telegram_username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["remember_me_token"], name: "index_users_on_remember_me_token"
+    t.index ["telegram_id"], name: "index_users_on_telegram_id", unique: true
   end
 
   add_foreign_key "cars", "users"
+  add_foreign_key "messages", "users"
 end

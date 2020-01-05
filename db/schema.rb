@@ -33,6 +33,8 @@ ActiveRecord::Schema.define(version: 2020_01_05_174022) do
     t.decimal "value"
     t.string "text"
     t.integer "kind", default: 0, null: false
+    t.integer "telegram_message_id", null: false
+    t.datetime "telegram_date", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_messages_on_user_id"

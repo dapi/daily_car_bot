@@ -1,24 +1,21 @@
-# README
+# CarLoggerBot
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Телеграм-бот для ведения журнала обслуживания авто. Написан на Ruby On Rails
 
-Things you may want to cover:
+## Зависимости
 
-* Ruby version
+* Postgresql >= 9.0
+* Redis >= 3.0
 
-* System dependencies
+## Установка
 
-* Configuration
+* Получите telegram token в bot father
+* Пропишите token через `rails credentials:edit` в `telegram.bot`
 
-* Database creation
+## Запуск
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```bash
+bundle
+bundle exec rake db:setup
+bundle exec rake telegram:bot:poller
+```

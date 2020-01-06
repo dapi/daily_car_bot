@@ -28,6 +28,9 @@ ru:
         Следующее ТО: %{car.next_maintenance_mileage} км (#{car.next_maintenance_mileage_distance} км)
         Страховка заканчивается: %{car.insurance_end_date}
 
+    reset:
+      success: Пользователь удалён
+      no_arg: Укажите аргумент %{arg} чтобы удалить ВСЕ данные.
     message:
       response: "Понятно, так и запишем: %{stored_message.humanized}"
 

@@ -3,6 +3,8 @@
 # Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
 
 class TelegramWebhooksController < Telegram::Bot::UpdatesController
+  use_session!
+
   include Telegram::Bot::UpdatesController::MessageContext
   include Telegram::Bot::UpdatesController::CallbackQueryContext
   include CurrentUser
@@ -10,6 +12,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   include HandleErrors
   include LaterMessage
   include StoreMessage
+  include Wizard
 
   def message(message)
     stored_message = store_message message
@@ -17,9 +20,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def start!(*)
-    # TODO: if current_car.present?
-    save_context :set_car!
-    later_message t('telegram_webhooks.set_car.question'), 5.seconds
+    next_wizard_step 5.seconds
     respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 
@@ -31,9 +32,25 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     end
   end
 
+  def reset!(arg = nil, *)
+    if arg == 'force'
+      current_user.destroy!
+      session.destroy
+      respond_with :message, text: t('.success'), parse_mode: :Markdown
+    else
+      respond_with :message, text: t('.no_arg', arg: 'force'), parse_mode: :Markdown
+    end
+  end
+
+  def set_maintenance_mileage!(mileage)
+    current_car.update! maintenance_mileage: mileage
+    next_wizard_step
+    respond_with :message, text: t('.success'), parse_mode: :Markdown
+  end
+
   def set_next_maintenance!(mileage)
     current_car.update! next_maintenance_mileage: mileage
-    later_message t('telegram_webhooks.questions_finished')
+    next_wizard_step
     respond_with :message, text: t('.success'), parse_mode: :Markdown
   end
 
@@ -46,26 +63,23 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
       telegram_date: telegram_date
     )
     current_car.update! current_mileage: mileage
-    save_context :set_next_maintenance!
-    later_message t('telegram_webhooks.set_next_maintenance.question')
+    next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
   def set_insurance_date!(date)
     current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
-    save_context :set_mileage!
-    later_message t('telegram_webhooks.set_mileage.question')
+    next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
   def set_number!(number = nil)
     current_car.update! number: number == '0' ? nil : number
-    save_context :set_insurance_date!
-    later_message t('telegram_webhooks.set_insurance_date.question')
+    next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
-  def set_car!(model = nil, mark = nil, year = nil)
+  def set_car!(mark = nil, model = nil, year = nil)
     if model.present? && mark.present? && year.present?
       if current_car.present?
         current_car.update model: model, mark: mark, year: year
@@ -73,8 +87,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
         current_user.create_car! model: model, mark: mark, year: year
       end
 
-      save_context :set_number!
-      later_message t('telegram_webhooks.set_number.question')
+      next_wizard_step
       respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
     else
       save_context :set_car!

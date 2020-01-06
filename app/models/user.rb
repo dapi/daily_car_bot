@@ -5,6 +5,7 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
 
+  has_many :cars, dependent: :delete_all
   has_one :car, dependent: :delete
   has_many :messages, dependent: :delete_all
 

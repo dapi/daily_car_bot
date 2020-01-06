@@ -32,11 +32,6 @@ group :red_green_refactor, halt_on_fail: true do
     watch(%r{^test/test_helper\.rb$})      { 'test' }
   end
 
-  guard :rubocop, all_on_start: false do
-    watch(/.+\.rb$/)
-    watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
-  end
-
   # Note: The cmd option is now required due to the increasing number of ways
   #       rspec may be run, below are examples of the most common uses.
   #  * bundler: 'bundle exec rspec'
@@ -71,7 +66,8 @@ group :red_green_refactor, halt_on_fail: true do
       [
         rspec.spec.call("routing/#{m[1]}_routing"),
         rspec.spec.call("controllers/#{m[1]}_controller"),
-        rspec.spec.call("acceptance/#{m[1]}")
+        rspec.spec.call("acceptance/#{m[1]}"),
+        rspec.spec.call("requests/#{m[1]}")
       ]
     end
 
@@ -79,6 +75,7 @@ group :red_green_refactor, halt_on_fail: true do
     watch(rails.spec_helper)     { rspec.spec_dir }
     watch(rails.routes)          { "#{rspec.spec_dir}/routing" }
     watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
+    watch(rails.app_controller)  { "#{rspec.spec_dir}/requests" }
 
     # Capybara features specs
     watch(rails.view_dirs)     { |m| rspec.spec.call("features/#{m[1]}") }
@@ -90,4 +87,9 @@ group :red_green_refactor, halt_on_fail: true do
       Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance'
     end
   end
+
+  #guard :rubocop, all_on_start: false, cli: '--rails' do
+    #watch(/.+\.rb$/)
+    #watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
+  #end
 end

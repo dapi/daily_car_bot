@@ -84,8 +84,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     save_context :set_model!
     @later_wait = 5.seconds
     @later_message = car_question
-    binding.pry
-    respond_with :message, text: t('.start_message', user: current_user), parse_mode: :Markdown
+    respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 
   private
@@ -126,16 +125,6 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
   def value_numeric?(value)
     value.present? && (value.to_f.to_s == value || value.to_i.to_s == value)
-  end
-
-  def start_message
-    %(
-  Привет, #{current_user.first_name}!
-
-  Я – бот-дневник, помогаю вести журнал обслуживания твоего авто. Со мной ты не пропустишь техобслуживание, осмотр, обновление страховки, будешь знать стоимость владения автомобилем и многое другое.
-
-  Для начала я задам тебе 5 вопросов о твоём авто: марку, модель и год производства, регистрационный номер, текущий пробег, следующее ТО и дату окончания страховки. Поехали!
-  )
   end
 
   def car_question

@@ -18,7 +18,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
   def set_next_maintenance!(mileage)
     current_car.update! next_maintenance_mileage: mileage
-    later_message t('.questions_finished')
+    later_message t('telegram_webhooks.questions_finished')
     respond_with :message, text: t('.success'), parse_mode: :Markdown
   end
 
@@ -40,21 +40,21 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     )
     current_car.update! current_mileage: mileage
     save_context :set_next_maintenance!
-    later_message t('.next_maintenance_question')
+    later_message t('telegram_webhooks.set_next_maintenance.question')
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
   def set_insurance_date!(date)
     current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
     save_context :set_mileage!
-    later_message t('.mileage_question')
+    later_message t('telegram_webhooks.set_mileage.question')
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
   def set_number!(number = nil)
     current_car.update! number: number == '0' ? nil : number
     save_context :set_insurance_date!
-    later_message t('.insurance_question')
+    later_message t('telegram_webhooks.set_insurance_date.question')
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
@@ -67,7 +67,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
       end
 
       save_context :set_number!
-      later_message t('.number_question')
+      later_message t('telegram_webhooks.set_number.question')
       respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
     else
       save_context :set_car!
@@ -78,7 +78,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   def start!(*)
     # TODO: if current_car.present?
     save_context :set_car!
-    later_message t('.car_question'), 5.seconds
+    later_message t('telegram_webhooks.set_car.question'), 5.seconds
     respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 end

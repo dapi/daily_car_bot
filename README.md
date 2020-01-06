@@ -2,7 +2,7 @@
 
 Телеграм-бот для ведения журнала обслуживания авто. Написан на Ruby On Rails.
 
-[@car_logger_bot](https://t.me/car_logger_bot)
+[@CarDayBot](https://t.me/CarDayBot)
 
 ## Зависимости
 

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+
 class CarDecorator < Draper::Decorator
   include ActionView::Helpers::DateHelper
 
   delegate_all
 
-  def model
-    object.model
-  end
+  delegate :model, to: :object
 
   def current_mileage
     humanized_mileage object.current_mileage
@@ -25,15 +27,17 @@ class CarDecorator < Draper::Decorator
 
   def insurance_end_date
     return '???' if object.insurance_end_date.nil?
+
     I18n.l(object.insurance_end_date, format: :human).squish
   end
 
   def insurance_end_distance
     return '???' if object.insurance_end_date.nil?
+
     distance = Time.zone.today - object.insurance_end_date
 
     text = distance_of_time_in_words Time.zone.today, object.insurance_end_date
-    if distance > 0
+    if distance.positive?
       "ПРОСРОЧЕНО #{text}"
     else
       "закончится через #{text}"
@@ -53,6 +57,7 @@ class CarDecorator < Draper::Decorator
 
   def humanized_mileage(mileage)
     return '???' if mileage.nil?
+
     mileage.to_s + ' км.'
   end
 end

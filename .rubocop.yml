@@ -17,7 +17,7 @@ Metrics/LineLength:
   Max: 120
 
 Metrics/MethodLength:
-  Max: 20
+  Max: 30
 
 Style/AsciiComments:
   Enabled: false
@@ -45,6 +45,8 @@ Metrics/AbcSize:
 # ExcludedMethods: refine
 Metrics/BlockLength:
   ExcludedMethods: ['resource', 'describe', 'context']
+  Exclude:
+    - db/**/*
   Max: 45
 
 # Offense count: 1

@@ -1,7 +1,12 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+#
+# rubocop:disable Metrics/AbcSize
 module Wizard
   private
 
-  def next_wizard_step wait = 2.seconds
+  def next_wizard_step(wait = 2.seconds)
     next_step = nil
     if current_car.model.blank?
       next_step = 'set_car'
@@ -26,3 +31,4 @@ module Wizard
     later_message t("telegram_webhooks.#{next_step}.question"), wait
   end
 end
+# rubocop:enable Metrics/AbcSize

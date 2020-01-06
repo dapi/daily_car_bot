@@ -58,10 +58,10 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     current_car.update! number: number == '0' ? nil : number
     save_context :set_insurance_date!
     @later_message = insurance_question
-    respond_with :message, text: number_message, parse_mode: :Markdown
+    respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
-  def set_model!(model = nil, mark = nil, year = nil)
+  def set_car!(model = nil, mark = nil, year = nil)
     if model.present? && mark.present? && year.present?
       if current_car.present?
         current_car.update model: model, mark: mark, year: year
@@ -71,19 +71,18 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
       save_context :set_number!
       @later_message = number_question
-      respond_with :message, text: car_message, parse_mode: :Markdown
+      respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
     else
-      save_context :set_model!
-      respond_with :message,
-                   text: 'Что-то вы не то мне говорите. Напишите марку, модель и год производства вашего автомобиля. Например: `Nissan X-Trail 2010`'
+      save_context :set_car!
+      respond_with :message, text: t('.wrong'), parse_mode: :Markdown
     end
   end
 
   def start!(*)
     # TODO if current_car.present?
-    save_context :set_model!
+    save_context :set_car!
     @later_wait = 5.seconds
-    @later_message = car_question
+    @later_message = t('.car_question')
     respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 
@@ -127,20 +126,8 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     value.present? && (value.to_f.to_s == value || value.to_i.to_s == value)
   end
 
-  def car_question
-    'Напиши через пробел марку, модель и год выпуска твоего авто. Например: `Nissan X-Trail 2010`'
-  end
-
-  def car_message
-    "Отлично! Теперь я знаю что у тебя #{current_car.humanized}."
-  end
-
   def number_question
     'Вопрос 2 из 5. Напиши регистрационный номер авто без пробелов, так я смогу сообщать о поступащюих штрафах. Например: `А123БВ21`'
-  end
-
-  def number_message
-    "Регистрационный номер автомобиля: #{current_car.number}."
   end
 
   def insurance_question

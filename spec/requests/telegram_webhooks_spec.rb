@@ -5,36 +5,28 @@
 require 'rails_helper'
 
 RSpec.describe TelegramWebhooksController, telegram_bot: :rails do
-  describe '#start!' do
-    subject { -> { dispatch_command :start } }
-    it { should respond_with_message(/Привет/) }
-  end
   # Main method is #dispatch(update). Some helpers are:
   # dispatch_message(text, options = {})
   # dispatch_command(cmd, *args)
 
-  # Available matchers can be found in Telegram::Bot::RSpec::ClientMatchers.
-  # it 'shows usage of basic matchers' do
-  # The most basic one is #make_telegram_request(bot, endpoint, params_matcher)
-  # expect { dispatch_command(:start) }
-  # .to make_telegram_request(bot, :sendMessage) , hash_including(text: 'msg text'))
+  describe '#start!' do
+    subject { -> { dispatch_command :start } }
+    it { should respond_with_message(/Привет/) }
+  end
 
-  # There are some shortcuts for dispatching basic updates and testing responses.
-  # expect { dispatch_message('Hi') }.to send_telegram_message(bot, /msg regexp/, some: :option)
-  # end
+  describe '#set_car!' do
+    context 'wrong value' do
+      subject { -> { dispatch_command :set_car } }
+      it { should respond_with_message(/Напишите/) }
+    end
+    context 'value exists' do
+      subject { -> { dispatch_command :set_car, 'nissan x-trail 2010' } }
+      it { should respond_with_message(/Отлично/) }
+    end
+  end
 
-  # describe '#start!' do
-  # subject { -> { dispatch_command :start } }
-  # Using built in matcher for `respond_to`:
-  # it { should respond_with_message 'Hi there!' }
-  # end
-
-  # There is context for callback queries with related matchers,
-  # use :callback_query tag to include it.
-  # describe '#hey_callback_query', :callback_query do
-  # let(:data) { "hey:#{name}" }
-  # let(:name) { 'Joe' }
-  # it { should answer_callback_query('Hey Joe') }
-  # it { should edit_current_message :text, text: 'Done' }
-  # end
+  describe '#set_number!' do
+    subject { -> { dispatch_command :set_number, 'AB123C21' } }
+    it { should respond_with_message(/Регистрационный номер/) }
+  end
 end

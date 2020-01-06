@@ -19,6 +19,6 @@ module CurrentUser
   end
 
   def current_car
-    current_user.car
+    current_user.car || current_user.create_car!
   end
 end

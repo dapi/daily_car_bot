@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+
 module LaterMessage
   extend ActiveSupport::Concern
 
@@ -15,7 +19,7 @@ module LaterMessage
 
   private
 
-  def later_message message, wait = 2.seconds
+  def later_message(message, wait = 2.seconds)
     @later_message = message
     @later_wait = wait
   end

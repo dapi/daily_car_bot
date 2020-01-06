@@ -7,12 +7,14 @@ module TelegramHelpers
 
   def telegram_message_id
     return 0 if Rails.env.test?
+
     payload['message_id'] || raise('No message_id')
   end
 
   def telegram_date
-    return Date.today if Rails.env.test?
+    return Time.zone.today if Rails.env.test?
     raise 'No date' unless payload.key? 'date'
+
     Time.zone.at(payload['date']).to_datetime
   end
 

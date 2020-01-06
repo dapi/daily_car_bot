@@ -1,10 +1,14 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+
 module I18n
   # Implemented to support method call on translation keys
   INTERPOLATION_WITH_METHOD_PATTERN = Regexp.union(
     /%%/,
     /%\{(\w+)\}/,                               # matches placeholders like "%{foo}"
     /%<(\w+)>(.*?\d*\.?\d*[bBdiouxXeEfgGcps])/, # matches placeholders like "%<foo>.d"
-    /%\{(\w+)\.(\w+)\}/, # matches placeholders like "%{foo.upcase}"
+    /%\{(\w+)\.(\w+)\}/ # matches placeholders like "%{foo.upcase}"
   )
 
   class << self

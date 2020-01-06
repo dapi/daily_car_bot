@@ -75,7 +75,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def start!(*)
-    # TODO if current_car.present?
+    # TODO: if current_car.present?
     save_context :set_car!
     later_message t('.car_question'), 5.seconds
     respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
@@ -113,7 +113,9 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     current_user.messages.create! attrs
   end
 
+  # rubocop:disable Style/MultipleComparison
   def value_numeric?(value)
     value.present? && (value.to_f.to_s == value || value.to_i.to_s == value)
   end
+  # rubocop:enable Style/MultipleComparison
 end

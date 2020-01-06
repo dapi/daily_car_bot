@@ -26,7 +26,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
   def info!(*)
     if current_car.present?
-      respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
+      respond_with :message, text: t('.success', car: CarDecorator.decorate(current_car)), parse_mode: :Markdown
     else
       respond_with :message, text: t('.empty'), parse_mode: :Markdown
     end

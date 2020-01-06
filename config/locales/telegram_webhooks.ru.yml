@@ -24,9 +24,9 @@ ru:
         Модель: %{car.model}
         Год выпуска: %{car.year}
         ---
-        Текущий пробег: %{car.current_mileage} км
-        Следующее ТО: %{car.next_maintenance_mileage} км (%{car.next_maintenance_mileage_distance} км)
-        Страховка заканчивается: %{car.insurance_end_date}
+        Текущий пробег: %{car.current_mileage}
+        Следующее ТО: %{car.next_maintenance_mileage}, через %{car.next_maintenance_mileage_distance}, каждые %{car.maintenance_mileage}
+        Страховка заканчивается: %{car.insurance_end_date}, %{car.insurance_end_distance}
 
     reset:
       success: Пользователь удалён

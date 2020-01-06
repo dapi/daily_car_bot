@@ -12,9 +12,11 @@ class WebhookController < Telegram::Bot::UpdatesController
   # after_action вызывается уже после того как в телеграм ушет ответ от action.
   # Это хороший способ послать еще одно сообщение, например с вопросом после ответа.
   after_action do
-    SendMessageJob.
-      set(wait: @later_wait || 2.seconds).
-      perform_later from['id'], text: @later_message, parse_mode: :Markdown if @later_message.present?
+    if @later_message.present?
+      SendMessageJob
+        .set(wait: @later_wait || 2.seconds)
+        .perform_later from['id'], text: @later_message, parse_mode: :Markdown
+    end
   end
 
   def message(message)

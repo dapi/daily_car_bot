@@ -10,7 +10,9 @@ module HandleErrors
   end
 
   def handle_error(error)
-    Rails.logger.error(error)
+    raise error if Rails.env.test?
+    Rails.logger.error error
+    Rails.logger.error error.backtrace
     respond_with :message, text: "Error: #{error.message}" unless error.is_a? Telegram::Bot::Forbidden
   end
 end

@@ -26,7 +26,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
   def info!(*)
     if current_car.present?
-      respond_with :message, text: t('.success'), parse_mode: :Markdown
+      respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
     else
       respond_with :message, text: t('.empty'), parse_mode: :Markdown
     end
@@ -42,19 +42,19 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     end
   end
 
-  def set_maintenance_mileage!(mileage)
+  def set_maintenance_mileage!(mileage, *)
     current_car.update! maintenance_mileage: mileage
     next_wizard_step
-    respond_with :message, text: t('.success'), parse_mode: :Markdown
+    respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
-  def set_next_maintenance!(mileage)
+  def set_next_maintenance!(mileage, *)
     current_car.update! next_maintenance_mileage: mileage
     next_wizard_step
-    respond_with :message, text: t('.success'), parse_mode: :Markdown
+    respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
-  def set_mileage!(mileage)
+  def set_mileage!(mileage, *)
     mileage = mileage.to_f
     current_user.messages.create!(
       value: mileage,
@@ -67,19 +67,19 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
-  def set_insurance_date!(date)
+  def set_insurance_date!(date, *)
     current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
     next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
-  def set_number!(number = nil)
+  def set_number!(number = nil, *)
     current_car.update! number: number == '0' ? nil : number
     next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
-  def set_car!(mark = nil, model = nil, year = nil)
+  def set_car!(mark = nil, model = nil, year = nil, *)
     if model.present? && mark.present? && year.present?
       if current_car.present?
         current_car.update model: model, mark: mark, year: year

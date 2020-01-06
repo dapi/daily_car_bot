@@ -29,4 +29,9 @@ RSpec.describe TelegramWebhooksController, telegram_bot: :rails do
     subject { -> { dispatch_command :set_number, 'AB123C21' } }
     it { should respond_with_message(/Регистрационный номер/) }
   end
+
+  describe '#set_mileage!' do
+    subject { -> { dispatch_command :set_mileage, '1231231' } }
+    it { should respond_with_message(/текущий пробег/) }
+  end
 end

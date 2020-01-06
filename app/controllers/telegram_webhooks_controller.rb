@@ -35,29 +35,30 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def set_mileage!(mileage)
+    mileage = mileage.to_f
     current_user.messages.create!(
       value: mileage,
       kind: :mileage,
-      telegram_message_id: payload['message_id'],
-      telegram_date: Time.zone.at(payload['date']).to_datetime
+      telegram_message_id: telegram_message_id,
+      telegram_date: telegram_date
     )
     current_car.update! current_mileage: mileage
     save_context :set_next_maintenance!
-    @later_message = next_maintenance_question
-    respond_with :message, text: mileage_message, parse_mode: :Markdown
+    @later_message = t('.next_maintenance_question')
+    respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
   def set_insurance_date!(date)
     current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
     save_context :set_mileage!
-    @later_message = mileage_question
-    respond_with :message, text: insurance_message, parse_mode: :Markdown
+    @later_message = t('.mileage_question')
+    respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
   def set_number!(number = nil)
     current_car.update! number: number == '0' ? nil : number
     save_context :set_insurance_date!
-    @later_message = insurance_question
+    @later_message = t('.insurance_question')
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
@@ -70,7 +71,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
       end
 
       save_context :set_number!
-      @later_message = number_question
+      @later_message = t('.number_question')
       respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
     else
       save_context :set_car!
@@ -94,8 +95,8 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
   def store_message(message)
     attrs = {
-      telegram_message_id: message['message_id'],
-      telegram_date: Time.zone.at(message['date']).to_datetime
+      telegram_message_id: telegram_message_id,
+      telegram_date: telegram_date
     }
 
     message_text = message['text']
@@ -124,30 +125,6 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
 
   def value_numeric?(value)
     value.present? && (value.to_f.to_s == value || value.to_i.to_s == value)
-  end
-
-  def number_question
-    'Вопрос 2 из 5. Напиши регистрационный номер авто без пробелов, так я смогу сообщать о поступащюих штрафах. Например: `А123БВ21`'
-  end
-
-  def insurance_question
-    'Вопрос 3 из 5. Напиши дату окончания действия текущей страховки в формате ЧИСЛО-МЕСЯЦ-ГОД. Например: `31-12-2010`. Введи 0, если её нет или она закончилась.'
-  end
-
-  def insurance_message
-    "Понятно, страховка заканчивается #{l current_car.insurance_end_date}."
-  end
-
-  def mileage_question
-    'Вопрос 4 из 5 (предпоследний). Напишите текущий пробег авто в километрах. Например: `65000`'
-  end
-
-  def mileage_message
-    "Ага, текущий пробег авто #{current_car.current_mileage} км. Так и запишем."
-  end
-
-  def next_maintenance_question
-    'Последний вопрос, на каком пробеге планируется делать следующее Техническое Обслуживание? Напиши в километрах. Например: `80000`'
   end
 
   def maintenance_message
@@ -185,5 +162,16 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   Погнали!
 
   }
+  end
+
+  def telegram_message_id
+    return 0 if Rails.env.test?
+    payload['message_id'] || raise('No message_id')
+  end
+
+  def telegram_date
+    return Date.today if Rails.env.test?
+    raise 'No date' unless payload.key? 'date'
+    Time.zone.at(payload['date']).to_datetime
   end
 end

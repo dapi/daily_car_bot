@@ -2,6 +2,8 @@
 
 Телеграм-бот для ведения журнала обслуживания авто. Написан на Ruby On Rails.
 
+[![Build Status](https://travis-ci.org/dapi/car_day_bot.svg?branch=master)](https://travis-ci.org/dapi/car_day_bot)
+
 [@CarDayBot](https://t.me/CarDayBot)
 
 ## Зависимости

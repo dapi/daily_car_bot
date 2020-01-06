@@ -1,0 +1,20 @@
+language: ruby
+addons:
+  postgresql: "10"
+dist: bionic
+cache:
+  bundler: true
+  directories:
+  - node_modules
+services:
+- postgresql
+before_install:
+- gem update --no-document --remote bundler
+- yarn install
+before_script:
+- rm -rf public/packs*/
+- bundle exec rake db:test:prepare
+- RAILS_ENV=test bundle exec rails webpacker:compile
+script:
+- bundle exec rake test
+- bundle exec rubocop

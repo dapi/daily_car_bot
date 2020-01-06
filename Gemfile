@@ -72,3 +72,9 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 gem 'draper', '~> 3.1'
+
+group :production, :development do
+  gem 'bugsnag', '~> 6.12'
+end
+
+gem 'semver2', '~> 3.4'

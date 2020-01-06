@@ -12,6 +12,7 @@ module HandleErrors
   def handle_error(error)
     raise error if Rails.env.test?
 
+    Bugsnag.notify error if defined? Bugsnag
     Rails.logger.error error
     Rails.logger.error error.backtrace
     respond_with :message, text: "Error: #{error.message}" unless error.is_a? Telegram::Bot::Forbidden

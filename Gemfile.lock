@@ -74,6 +74,8 @@ GEM
     bindex (0.8.1)
     bootsnap (1.4.5)
       msgpack (~> 1.0)
+    bugsnag (6.12.2)
+      concurrent-ruby (~> 1.0)
     builder (3.2.4)
     byebug (11.0.1)
     capybara (3.30.0)
@@ -259,6 +261,7 @@ GEM
     selenium-webdriver (3.142.7)
       childprocess (>= 0.5, < 4.0)
       rubyzip (>= 1.2.2)
+    semver2 (3.4.2)
     shellany (0.0.1)
     socksify (1.7.1)
     sorcery (0.14.0)
@@ -315,6 +318,7 @@ PLATFORMS
 DEPENDENCIES
   auto_logger
   bootsnap (>= 1.4.2)
+  bugsnag (~> 6.12)
   byebug
   capybara (>= 2.15)
   draper (~> 3.1)
@@ -334,6 +338,7 @@ DEPENDENCIES
   rspec-rails
   rubocop-rails
   selenium-webdriver
+  semver2 (~> 3.4)
   socksify
   sorcery (~> 0.14.0)
   spring

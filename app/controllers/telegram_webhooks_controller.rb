@@ -80,11 +80,12 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def start!(*)
-    # if current_car.present?
+    # TODO if current_car.present?
     save_context :set_model!
     @later_wait = 5.seconds
     @later_message = car_question
-    respond_with :message, text: start_message, parse_mode: :Markdown
+    binding.pry
+    respond_with :message, text: t('.start_message', user: current_user), parse_mode: :Markdown
   end
 
   private

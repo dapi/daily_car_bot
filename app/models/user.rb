@@ -5,8 +5,8 @@
 class User < ApplicationRecord
   authenticates_with_sorcery!
 
-  has_one :car
-  has_many :messages
+  has_one :car, dependent: :delete
+  has_many :messages, dependent: :delete_all
 
   validates :telegram_id, presence: true
 end

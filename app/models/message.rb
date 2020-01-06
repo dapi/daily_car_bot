@@ -4,7 +4,7 @@
 
 class Message < ApplicationRecord
   belongs_to :user
-  enum kind: %i[other mileage spending], _prefix: true
+  enum kind: { other: 0, mileage: 1, spending: 2 }, _prefix: true
 
   def humanized
     case kind

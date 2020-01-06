@@ -35,7 +35,7 @@ class WebhookController < Telegram::Bot::UpdatesController
       value: mileage,
       kind: :mileage,
       telegram_message_id: payload['message_id'],
-      telegram_date: Time.at(payload['date']).to_datetime
+      telegram_date: Time.zone.at(payload['date']).to_datetime
     )
     current_car.update! current_mileage: mileage
     save_context :set_next_maintenance!
@@ -92,7 +92,7 @@ class WebhookController < Telegram::Bot::UpdatesController
   def store_message(message)
     attrs = {
       telegram_message_id: message['message_id'],
-      telegram_date: Time.at(message['date']).to_datetime
+      telegram_date: Time.zone.at(message['date']).to_datetime
     }
 
     message_text = message['text']
@@ -174,7 +174,7 @@ class WebhookController < Telegram::Bot::UpdatesController
   end
 
   def info_message
-    return 'Я пока ничего не знаю о твоём автомобиле' unless current_car.present?
+    return 'Я пока ничего не знаю о твоём автомобиле' if current_car.blank?
 
     %{
 Марка: #{current_car.mark}

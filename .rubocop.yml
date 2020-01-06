@@ -1,1 +1,72 @@
 inherit_from: .rubocop_todo.yml
+AllCops:
+  Exclude:
+    - utils/*
+    - bin/*
+    - doc/*
+    - log/*
+    - vendor/*
+    - vendor/**/*
+    - tmp/*
+    - node_modules/**/*
+
+# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
+# URISchemes: http, https
+Metrics/LineLength:
+  Max: 120
+
+Metrics/MethodLength:
+  Max: 20
+
+Style/AsciiComments:
+  Enabled: false
+
+Style/GlobalVars:
+  Enabled: false
+
+Metrics/BlockLength:
+  ExcludedMethods: ['resource', 'describe', 'context']
+
+Style/Copyright:
+  Notice: 'Copyright (\(c\) )?2[0-9]{3} .+'
+  AutocorrectNotice: "# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>\n"
+  Description: 'Include a copyright notice in each file before any code.'
+  Enabled: true
+  VersionAdded: '0.0.2'
+
+# Offense count: 20
+Style/Documentation:
+  Enabled: false
+
+# Offense count: 5
+Metrics/AbcSize:
+  Max: 21
+
+# Offense count: 1
+# Configuration parameters: CountComments, ExcludedMethods.
+# ExcludedMethods: refine
+Metrics/BlockLength:
+  Max: 45
+
+# Offense count: 1
+# Configuration parameters: CountComments.
+Metrics/ClassLength:
+  Max: 156
+
+# Offense count: 1
+Metrics/CyclomaticComplexity:
+  Max: 9
+
+# Offense count: 5
+# Configuration parameters: CountComments, ExcludedMethods.
+Metrics/MethodLength:
+  Max: 19
+
+# Offense count: 1
+Metrics/PerceivedComplexity:
+  Max: 9
+
+Style/ClassAndModuleChildren:
+  Exclude:
+    - test/**/*
+# Offense count: 4

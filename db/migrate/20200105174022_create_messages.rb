@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+
 class CreateMessages < ActiveRecord::Migration[6.0]
   def change
-    create_table :messages, id: :uuid, default: -> { "uuid_generate_v4()" } do |t|
+    create_table :messages, id: :uuid, default: -> { 'uuid_generate_v4()' } do |t|
       t.references :user, null: false, foreign_key: true, type: :uuid
       t.decimal :value
       t.string :text

@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+
 # The first thing you need to configure is which modules you need in your app.
 # The default is nothing which will include only core features (password encryption, login/logout).
 #
@@ -87,130 +91,6 @@ Rails.application.config.sorcery.configure do |config|
   # Default: `'path/to/ca_file'`
   #
   # config.ca_file =
-
-  # config.linkedin.key = ""
-  # config.linkedin.secret = ""
-  # config.linkedin.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=linkedin"
-  # config.linkedin.user_info_mapping = {first_name: "firstName", last_name: "lastName"}
-  # config.linkedin.scope = "r_basicprofile"
-  #
-  #
-  # For information about XING API:
-  # - user info fields go to https://dev.xing.com/docs/get/users/me
-  #
-  # config.xing.key = ""
-  # config.xing.secret = ""
-  # config.xing.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=xing"
-  # config.xing.user_info_mapping = {first_name: "first_name", last_name: "last_name"}
-  #
-  #
-  # Twitter will not accept any requests nor redirect uri containing localhost,
-  # Make sure you use 0.0.0.0:3000 to access your app in development
-  #
-  # config.twitter.key = ""
-  # config.twitter.secret = ""
-  # config.twitter.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=twitter"
-  # config.twitter.user_info_mapping = {:email => "screen_name"}
-  #
-  # config.facebook.key = ""
-  # config.facebook.secret = ""
-  # config.facebook.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=facebook"
-  # config.facebook.user_info_path = "me?fields=email"
-  # config.facebook.user_info_mapping = {:email => "email"}
-  # config.facebook.access_permissions = ["email"]
-  # config.facebook.display = "page"
-  # config.facebook.api_version = "v2.3"
-  # config.facebook.parse = :json
-  #
-  # config.instagram.key = ""
-  # config.instagram.secret = ""
-  # config.instagram.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=instagram"
-  # config.instagram.user_info_mapping = {:email => "username"}
-  # config.instagram.access_permissions = ["basic", "public_content", "follower_list", "comments", "relationships", "likes"]
-  #
-  # config.github.key = ""
-  # config.github.secret = ""
-  # config.github.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=github"
-  # config.github.user_info_mapping = {:email => "name"}
-  # config.github.scope = ""
-  #
-  # config.paypal.key = ""
-  # config.paypal.secret = ""
-  # config.paypal.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=paypal"
-  # config.paypal.user_info_mapping = {:email => "email"}
-  #
-  # config.wechat.key = ""
-  # config.wechat.secret = ""
-  # config.wechat.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=wechat"
-  #
-  # For Auth0, site is required and should match the domain provided by Auth0.
-  #
-  # config.auth0.key = ""
-  # config.auth0.secret = ""
-  # config.auth0.callback_url = "https://0.0.0.0:3000/oauth/callback?provider=auth0"
-  # config.auth0.site = "https://example.auth0.com"
-  #
-  # config.google.key = ""
-  # config.google.secret = ""
-  # config.google.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=google"
-  # config.google.user_info_mapping = {:email => "email", :username => "name"}
-  # config.google.scope = "https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile"
-  #
-  # For Microsoft Graph, the key will be your App ID, and the secret will be your app password/public key.
-  # The callback URL "can't contain a query string or invalid special characters"
-  # See: https://docs.microsoft.com/en-us/azure/active-directory/active-directory-v2-limitations#restrictions-on-redirect-uris
-  # More information at https://graph.microsoft.io/en-us/docs
-  #
-  # config.microsoft.key = ""
-  # config.microsoft.secret = ""
-  # config.microsoft.callback_url = "http://0.0.0.0:3000/oauth/callback/microsoft"
-  # config.microsoft.user_info_mapping = {:email => "userPrincipalName", :username => "displayName"}
-  # config.microsoft.scope = "openid email https://graph.microsoft.com/User.Read"
-  #
-  # config.vk.key = ""
-  # config.vk.secret = ""
-  # config.vk.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=vk"
-  # config.vk.user_info_mapping = {:login => "domain", :name => "full_name"}
-  # config.vk.api_version = "5.71"
-  #
-  # config.slack.callback_url = "http://0.0.0.0:3000/oauth/callback?provider=slack"
-  # config.slack.key = ''
-  # config.slack.secret = ''
-  # config.slack.user_info_mapping = {email: 'email'}
-  #
-  # To use liveid in development mode you have to replace mydomain.com with
-  # a valid domain even in development. To use a valid domain in development
-  # simply add your domain in your /etc/hosts file in front of 127.0.0.1
-  #
-  # config.liveid.key = ""
-  # config.liveid.secret = ""
-  # config.liveid.callback_url = "http://mydomain.com:3000/oauth/callback?provider=liveid"
-  # config.liveid.user_info_mapping = {:username => "name"}
-
-  # For information about JIRA API:
-  # https://developer.atlassian.com/display/JIRADEV/JIRA+REST+API+Example+-+OAuth+authentication
-  # To obtain the consumer key and the public key you can use the jira-ruby gem https://github.com/sumoheavy/jira-ruby
-  # or run openssl req -x509 -nodes -newkey rsa:1024 -sha1 -keyout rsakey.pem -out rsacert.pem to obtain the public key
-  # Make sure you have configured the application link properly
-
-  # config.jira.key = "1234567"
-  # config.jira.secret = "jiraTest"
-  # config.jira.site = "http://localhost:2990/jira/plugins/servlet/oauth"
-  # config.jira.signature_method =  "RSA-SHA1"
-  # config.jira.private_key_file = "rsakey.pem"
-
-  # For information about Salesforce API:
-  # https://developer.salesforce.com/signup &
-  # https://www.salesforce.com/us/developer/docs/api_rest/
-  # Salesforce callback_url must be https. You can run the following to generate self-signed ssl cert:
-  # openssl req -new -newkey rsa:2048 -sha1 -days 365 -nodes -x509 -keyout server.key -out server.crt
-  # Make sure you have configured the application link properly
-  # config.salesforce.key = '123123'
-  # config.salesforce.secret = 'acb123'
-  # config.salesforce.callback_url = "https://127.0.0.1:9292/oauth/callback?provider=salesforce"
-  # config.salesforce.scope = "full"
-  # config.salesforce.user_info_mapping = {:email => "email"}
-
   # config.line.key = ""
   # config.line.secret = ""
   # config.line.callback_url = "http://mydomain.com:3000/oauth/callback?provider=line"
@@ -527,5 +407,5 @@ Rails.application.config.sorcery.configure do |config|
 
   # This line must come after the 'user config' block.
   # Define which model authenticates with sorcery.
-  config.user_class = "User"
+  config.user_class = 'User'
 end

@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+
 # A sample Guardfile
 # More info at https://github.com/guard/guard#readme
 
@@ -15,8 +19,8 @@
 #
 # and, you'll have to watch "config/Guardfile" instead of "Guardfile"
 
-guard 'ctags-bundler', :src_path => ["app", "lib", "spec/support"] do
-  watch(/^(app|lib|spec\/support)\/.*\.rb$/)
+guard 'ctags-bundler', src_path: ['app', 'lib', 'spec/support'] do
+  watch(%r{^(app|lib|spec/support)/.*\.rb$})
   watch('Gemfile.lock')
 end
 
@@ -47,6 +51,6 @@ guard :minitest do
 end
 
 guard :rubocop do
-  watch(%r{.+\.rb$})
+  watch(/.+\.rb$/)
   watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
 end

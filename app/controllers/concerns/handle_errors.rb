@@ -10,12 +10,7 @@ module HandleErrors
   end
 
   def handle_error(error)
-    case error
-    when Telegram::Bot::Forbidden
-      logger.error(error)
-    else # ActiveRecord::ActiveRecordError for example
-      logger.error error
-      respond_with :message, text: "Error: #{error.message}"
-    end
+    logger.error(error)
+    respond_with :message, text: "Error: #{error.message}" unless error.is_a? Telegram::Bot::Forbidden
   end
 end

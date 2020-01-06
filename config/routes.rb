@@ -3,5 +3,5 @@
 # Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
 
 Rails.application.routes.draw do
-  telegram_webhook WebhookController
+  telegram_webhook TelegramWebhooksController
 end

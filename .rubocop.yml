@@ -1,4 +1,3 @@
-inherit_from: .rubocop_todo.yml
 AllCops:
   Exclude:
     - utils/*
@@ -49,7 +48,7 @@ Metrics/BlockLength:
 # Offense count: 1
 # Configuration parameters: CountComments.
 Metrics/ClassLength:
-  Max: 156
+  Max: 200
 
 # Offense count: 1
 Metrics/CyclomaticComplexity:
@@ -62,6 +61,15 @@ Metrics/PerceivedComplexity:
 Style/ClassAndModuleChildren:
   Exclude:
     - test/**/*
+
 Rails/BulkChangeTable:
   Exclude:
     - db/migrate/*
+
+Style/MultipleComparison:
+  Exclude:
+    - 'app/controllers/webhook_controller.rb'
+
+Naming/AccessorMethodName:
+  Exclude:
+    - app/controllers/telegram_webhooks_controller.rb

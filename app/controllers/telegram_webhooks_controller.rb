@@ -2,7 +2,7 @@
 
 # Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
 
-class WebhookController < Telegram::Bot::UpdatesController
+class TelegramWebhooksController < Telegram::Bot::UpdatesController
   include Telegram::Bot::UpdatesController::MessageContext
   include Telegram::Bot::UpdatesController::CallbackQueryContext
   include CurrentUser

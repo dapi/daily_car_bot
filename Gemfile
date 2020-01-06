@@ -41,6 +41,7 @@ group :development, :test do
   gem 'pry'
   gem 'pry-byebug'
   gem 'pry-rails'
+  gem 'rspec-rails'
   gem 'rubocop-rails'
 end
 
@@ -52,6 +53,7 @@ group :development do
   gem 'guard'
   gem 'guard-ctags-bundler'
   gem 'guard-minitest'
+  gem 'guard-rspec'
   gem 'guard-rubocop'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'

@@ -7,7 +7,7 @@ before_install:
 - gem update --no-document --remote bundler
 before_script:
 - rm -rf public/packs*/
-- bundle exec rake db:test:prepare
+- RAILS_ENV=test bundle exec rake db:test:prepare
 script:
-- bundle exec rake test
-- bundle exec rubocop
+- RAILS_ENV=test bundle exec rake test
+- RAILS_ENV=test bundle exec rubocop

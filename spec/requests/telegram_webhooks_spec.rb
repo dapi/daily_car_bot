@@ -34,4 +34,14 @@ RSpec.describe TelegramWebhooksController, telegram_bot: :rails do
     subject { -> { dispatch_command :set_mileage, '1231231' } }
     it { should respond_with_message(/текущий пробег/) }
   end
+
+  describe '#set_insurance_date!' do
+    subject { -> { dispatch_command :set_insurance_date, '31-12-2012' } }
+    it { should respond_with_message(/Понятно/) }
+  end
+
+  describe '#set_next_maintenance!' do
+    subject { -> { dispatch_command :set_next_maintenance, '132121' } }
+    it { should respond_with_message(/следующее ТО/) }
+  end
 end

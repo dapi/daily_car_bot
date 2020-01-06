@@ -16,10 +16,11 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     respond_with :message, text: t('.response', stored_message: stored_message)
   end
 
-  def set_next_maintenance!(mileage)
-    current_car.update! next_maintenance_mileage: mileage
-    later_message t('telegram_webhooks.questions_finished')
-    respond_with :message, text: t('.success'), parse_mode: :Markdown
+  def start!(*)
+    # TODO: if current_car.present?
+    save_context :set_car!
+    later_message t('telegram_webhooks.set_car.question'), 5.seconds
+    respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 
   def info!(*)
@@ -28,6 +29,12 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     else
       respond_with :message, text: t('.empty'), parse_mode: :Markdown
     end
+  end
+
+  def set_next_maintenance!(mileage)
+    current_car.update! next_maintenance_mileage: mileage
+    later_message t('telegram_webhooks.questions_finished')
+    respond_with :message, text: t('.success'), parse_mode: :Markdown
   end
 
   def set_mileage!(mileage)
@@ -73,12 +80,5 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
       save_context :set_car!
       respond_with :message, text: t('.wrong'), parse_mode: :Markdown
     end
-  end
-
-  def start!(*)
-    # TODO: if current_car.present?
-    save_context :set_car!
-    later_message t('telegram_webhooks.set_car.question'), 5.seconds
-    respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 end

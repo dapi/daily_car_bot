@@ -22,7 +22,11 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   # Запустить процесс знакомства
   def start!(*)
     next_wizard_step 5.seconds, true
-    respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
+    if session[:last_wizard_step]
+      respond_with :message, text: t('.welcome', user: current_user), parse_mode: :Markdown
+    else
+      respond_with :message, text: t('.known', user: current_user), parse_mode: :Markdown
+    end
   end
 
   # Показать текущую информацию

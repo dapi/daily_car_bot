@@ -10,6 +10,7 @@ AllCops:
     - tmp/*
     - node_modules/**/*
     - lib/*
+    - config/deploy.rb
 
 # Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
 # URISchemes: http, https

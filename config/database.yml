@@ -80,6 +80,5 @@ test:
 #
 production:
   <<: *default
-  database: car_logger_production
-  username: car_logger
-  password: <%= ENV['AUTOLOG_DATABASE_PASSWORD'] %>
+  database: daily_car_production
+  username: daily_car

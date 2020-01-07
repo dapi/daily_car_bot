@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+# Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
+
 set :application, 'dailycar.brandymint.ru'
 set :stage, :production
 set :rails_env, :production

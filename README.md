@@ -6,20 +6,39 @@
 
 Бот-дневник, помогает вести журнал обслуживания автомобиля. Так ты не пропустишь техобслуживание, осмотр, обновление страховки, будешь знать стоимость владения автомобилем и многое другое.
 
-## Зависимости
+# Зависимости
 
 * Postgresql >= 9.0
 * Redis >= 3.0
 
-## Установка
+# Установка
 
 * Получите telegram token в bot father
 * Пропишите token через `rails credentials:edit` в `telegram.bot`
 
-## Запуск
+# Запуск для разработки
 
 ```bash
 bundle
 bundle exec rake db:setup
 bundle exec rake telegram:bot:poller
+```
+
+# Развертывание
+
+## Впервые
+
+1. Создайте свой `config/master.key`
+2. Подготовьте структуру директорий на сервере
+
+```bash
+bundle exec cap production deploy:setup
+bundle exec cap production master_key:setup 
+bundle exec cap production deploy
+```
+
+# Регулярное развертывание
+
+```bash
+bundle exec cap production deploy
 ```

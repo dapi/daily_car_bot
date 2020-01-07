@@ -28,6 +28,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 gem 'auto_logger'
+gem 'slim-rails'
 gem 'socksify'
 gem 'sorcery', '~> 0.14.0'
 gem 'telegram-bot'
@@ -58,6 +59,19 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'terminal-notifier-guard' # , '~> 1.6.1', require: darwin_only('terminal-notifier-guard')
+
+  gem 'capistrano', require: false
+  gem 'capistrano-bundler', require: false
+  gem 'capistrano-db-tasks', require: false
+  gem 'capistrano-faster-assets', require: false
+  gem 'capistrano-master-key', require: false, github: 'virgoproz/capistrano-master-key'
+  gem 'capistrano-nvm', require: false
+  gem 'capistrano-rails', require: false
+  gem 'capistrano-rails-console', require: false
+  gem 'capistrano-rbenv', require: false
+  gem 'capistrano-shell', require: false
+  gem 'capistrano-yarn', require: false
+  gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false
 end
 
 group :test do

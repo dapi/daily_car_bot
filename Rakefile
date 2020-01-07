@@ -9,12 +9,14 @@ require_relative 'config/application'
 
 Rails.application.load_tasks
 
-require 'rubocop/rake_task'
+if defined? RuboCop
+  require 'rubocop/rake_task'
 
-RuboCop::RakeTask.new(:rubocop) do |t|
-  t.requires << 'rubocop-rails'
-  t.options = ['--display-cop-names']
-  t.fail_on_error = true
+  RuboCop::RakeTask.new(:rubocop) do |t|
+    t.requires << 'rubocop-rails'
+    t.options = ['--display-cop-names']
+    t.fail_on_error = true
+  end
+
+  task default: %i[test rubocop]
 end
-
-task default: %i[test rubocop]

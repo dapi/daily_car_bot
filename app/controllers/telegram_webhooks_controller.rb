@@ -81,7 +81,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   def set_insurance_date!(date, *)
     current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
     next_wizard_step
-    respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
+    respond_with :message, text: t('.success', car: CarDecorator.decorate(current_car)), parse_mode: :Markdown
   end
 
   # Установить регистрационный номер автомобиля

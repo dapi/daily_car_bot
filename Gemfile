@@ -28,10 +28,10 @@ gem 'jbuilder', '~> 2.7'
 # gem 'image_processing', '~> 1.2'
 
 gem 'auto_logger'
+gem 'slim-rails'
 gem 'socksify'
 gem 'sorcery', '~> 0.14.0'
 gem 'telegram-bot'
-gem 'slim-rails'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -65,12 +65,12 @@ group :development do
   gem 'capistrano-db-tasks', require: false
   gem 'capistrano-faster-assets', require: false
   gem 'capistrano-master-key', require: false, github: 'virgoproz/capistrano-master-key'
+  gem 'capistrano-nvm', require: false
   gem 'capistrano-rails', require: false
   gem 'capistrano-rails-console', require: false
   gem 'capistrano-rbenv', require: false
-  gem 'capistrano-nvm', require: false
-  gem 'capistrano-yarn', require: false
   gem 'capistrano-shell', require: false
+  gem 'capistrano-yarn', require: false
   gem 'capistrano3-puma', github: 'seuros/capistrano-puma', require: false
 end
 

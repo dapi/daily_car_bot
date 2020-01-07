@@ -35,6 +35,8 @@ bundle exec rake telegram:bot:poller
 bundle exec cap production deploy:setup
 bundle exec cap production master_key:setup 
 bundle exec cap production deploy
+bundle exec cap production shell
+server> RAILS_ENV=production bundle exec rake  telegram:bot:set_webhook 
 ```
 
 # Регулярное развертывание

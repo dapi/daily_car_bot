@@ -19,11 +19,13 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     respond_with :message, text: t('.response', stored_message: stored_message)
   end
 
+  # Запустить процесс знакомства
   def start!(*)
     next_wizard_step 5.seconds, true
     respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 
+  # Показать текущую информацию
   def info!(*)
     if current_car.present?
       respond_with :message, text: t('.success', car: CarDecorator.decorate(current_car)), parse_mode: :Markdown
@@ -32,6 +34,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     end
   end
 
+  # Сбросить всё информацию об автомобиле и пользователе (удаляет всё)
   def reset!(arg = nil, *)
     if arg == 'force'
       current_user.destroy!
@@ -42,18 +45,21 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     end
   end
 
+  # Установить периодиченость техобслуживания в километрах
   def set_maintenance_mileage!(mileage, *)
     current_car.update! maintenance_mileage: mileage
     next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
+  # Установить следующий пробег для прохождения ТО
   def set_next_maintenance!(mileage, *)
     current_car.update! next_maintenance_mileage: mileage
     next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
+  # Указать текущий пробег
   def set_mileage!(mileage, *)
     mileage = mileage.to_f
     current_user.messages.create!(
@@ -67,18 +73,21 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
+  # Установить дату окончания страховки
   def set_insurance_date!(date, *)
     current_car.update! insurance_end_date: date == '0' ? nil : Date.parse(date)
     next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
+  # Установить регистрационный номер автомобиля
   def set_number!(number = nil, *)
     current_car.update! number: number == '0' ? nil : number
     next_wizard_step
     respond_with :message, text: t('.success', car: current_car), parse_mode: :Markdown
   end
 
+  # Установить марку, модель и год производства автомобиля
   def set_car!(mark = nil, model = nil, year = nil, *)
     if model.present? && mark.present? && year.present?
       if current_car.present?

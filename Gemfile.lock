@@ -1,3 +1,20 @@
+GIT
+  remote: https://github.com/seuros/capistrano-puma.git
+  revision: 87bfd747bd43a19b5d214e0272b76fb723cf1f5f
+  specs:
+    capistrano3-puma (4.0.0)
+      capistrano (~> 3.7)
+      capistrano-bundler
+      puma (~> 4.0)
+
+GIT
+  remote: https://github.com/virgoproz/capistrano-master-key.git
+  revision: aa99a50e41733288a5d4e1884af16385855847de
+  specs:
+    capistrano-master-key (1.0.2)
+      capistrano (~> 3.11)
+      sshkit (~> 1.17)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -62,6 +79,8 @@ GEM
       zeitwerk (~> 2.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
+    airbrussh (1.4.0)
+      sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.0)
     auto_logger (0.1.4)
       activesupport
@@ -78,6 +97,28 @@ GEM
       concurrent-ruby (~> 1.0)
     builder (3.2.4)
     byebug (11.0.1)
+    capistrano (3.11.2)
+      airbrussh (>= 1.0.0)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (>= 1.9.0)
+    capistrano-bundler (1.6.0)
+      capistrano (~> 3.1)
+    capistrano-db-tasks (0.6)
+      capistrano (>= 3.0.0)
+    capistrano-faster-assets (1.1.0)
+      capistrano (>= 3.1)
+    capistrano-rails (1.4.0)
+      capistrano (~> 3.1)
+      capistrano-bundler (~> 1.1)
+    capistrano-rails-console (2.3.0)
+      capistrano (>= 3.5.0, < 4.0.0)
+      sshkit-interactive (~> 0.3.0)
+    capistrano-rbenv (2.1.4)
+      capistrano (~> 3.1)
+      sshkit (~> 1.3)
+    capistrano-shell (0.2.0)
+      capistrano (~> 3.1)
     capybara (3.30.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -157,6 +198,9 @@ GEM
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     nenv (0.3.0)
+    net-scp (2.0.0)
+      net-ssh (>= 2.6.5, < 6.0.0)
+    net-ssh (5.2.0)
     nio4r (2.5.2)
     nokogiri (1.10.7)
       mini_portile2 (~> 2.4.0)
@@ -279,6 +323,11 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sshkit (1.20.0)
+      net-scp (>= 1.1.2)
+      net-ssh (>= 2.8.0)
+    sshkit-interactive (0.3.0)
+      sshkit (~> 1.12)
     telegram-bot (0.14.3)
       actionpack (>= 4.0, < 6.1)
       activesupport (>= 4.0, < 6.1)
@@ -320,6 +369,16 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   bugsnag (~> 6.12)
   byebug
+  capistrano
+  capistrano-bundler
+  capistrano-db-tasks
+  capistrano-faster-assets
+  capistrano-master-key!
+  capistrano-rails
+  capistrano-rails-console
+  capistrano-rbenv
+  capistrano-shell
+  capistrano3-puma!
   capybara (>= 2.15)
   draper (~> 3.1)
   guard

@@ -3,6 +3,7 @@
 # Copyright (c) 2019 Danil Pismenny <danil@brandymint.ru>
 #
 # rubocop:disable Metrics/AbcSize
+# rubocop:disable Metrics/PerceivedComplexity
 module Wizard
   private
 
@@ -34,3 +35,4 @@ module Wizard
   end
 end
 # rubocop:enable Metrics/AbcSize
+# rubocop:enable Metrics/PerceivedComplexity

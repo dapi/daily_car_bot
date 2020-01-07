@@ -1,8 +1,8 @@
 # Дневник автомобилиста
 
-[@CarDayBot](https://t.me/CarDayBot) – телеграм-бот для ведения журнала обслуживания авто. Написан на Ruby On Rails.
+[@DailyCarBot](https://t.me/DailyCarBot) – телеграм-бот для ведения журнала обслуживания авто. Написан на Ruby On Rails.
 
-[![Build Status](https://travis-ci.org/dapi/car_day_bot.svg?branch=master)](https://travis-ci.org/dapi/car_day_bot)
+[![Build Status](https://travis-ci.org/dapi/daily_car_bot.svg?branch=master)](https://travis-ci.org/dapi/daily_car_bot)
 
 Бот-дневник, помогает вести журнал обслуживания автомобиля. Так ты не пропустишь техобслуживание, осмотр, обновление страховки, будешь знать стоимость владения автомобилем и многое другое.
 

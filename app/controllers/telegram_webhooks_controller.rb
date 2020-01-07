@@ -20,7 +20,7 @@ class TelegramWebhooksController < Telegram::Bot::UpdatesController
   end
 
   def start!(*)
-    next_wizard_step 5.seconds
+    next_wizard_step 5.seconds, true
     respond_with :message, text: t('.response', user: current_user), parse_mode: :Markdown
   end
 

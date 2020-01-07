@@ -6,7 +6,9 @@
 module Wizard
   private
 
-  def next_wizard_step(wait = 2.seconds)
+  def next_wizard_step(wait = 2.seconds, force = false)
+    return unless force || session[:last_wizard_step]
+
     next_step = nil
     if current_car.model.blank?
       next_step = 'set_car'

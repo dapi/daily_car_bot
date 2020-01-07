@@ -31,6 +31,7 @@ gem 'auto_logger'
 gem 'socksify'
 gem 'sorcery', '~> 0.14.0'
 gem 'telegram-bot'
+gem 'slim-rails'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false

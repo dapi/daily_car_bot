@@ -40,4 +40,3 @@ set :assets_dependencies,
       yarn.lock Gemfile.lock config/routes.rb config/initializers/assets.rb
       .semver
     ]
-

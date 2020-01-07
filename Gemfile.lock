@@ -108,6 +108,8 @@ GEM
       capistrano (>= 3.0.0)
     capistrano-faster-assets (1.1.0)
       capistrano (>= 3.1)
+    capistrano-nvm (0.0.7)
+      capistrano (~> 3.1)
     capistrano-rails (1.4.0)
       capistrano (~> 3.1)
       capistrano-bundler (~> 1.1)
@@ -119,6 +121,8 @@ GEM
       sshkit (~> 1.3)
     capistrano-shell (0.2.0)
       capistrano (~> 3.1)
+    capistrano-yarn (2.0.2)
+      capistrano (~> 3.0)
     capybara (3.30.0)
       addressable
       mini_mime (>= 0.1.3)
@@ -383,10 +387,12 @@ DEPENDENCIES
   capistrano-db-tasks
   capistrano-faster-assets
   capistrano-master-key!
+  capistrano-nvm
   capistrano-rails
   capistrano-rails-console
   capistrano-rbenv
   capistrano-shell
+  capistrano-yarn
   capistrano3-puma!
   capybara (>= 2.15)
   draper (~> 3.1)

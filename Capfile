@@ -16,6 +16,8 @@ require 'capistrano/scm/git'
 install_plugin Capistrano::SCM::Git
 
 require 'capistrano/rbenv'
+require 'capistrano/nvm'
+require 'capistrano/yarn'
 require 'capistrano/bundler'
 require 'capistrano-db-tasks'
 require 'capistrano/shell'
@@ -24,8 +26,8 @@ install_plugin Capistrano::Puma
 install_plugin Capistrano::Puma::Workers
 # install_plugin Capistrano::Puma::Nginx
 
-# require 'capistrano/rails/assets'
-# require 'capistrano/faster_assets'
+require 'capistrano/rails/assets'
+require 'capistrano/faster_assets'
 require 'capistrano/rails/migrations'
 
 require 'capistrano/rails/console'

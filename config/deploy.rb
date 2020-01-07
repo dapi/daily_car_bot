@@ -30,3 +30,14 @@ set :local_assets_dir, 'public'
 set :puma_init_active_record, true
 set :db_local_clean, false
 set :db_remote_clean, true
+
+set :nvm_node, File.read('.nvmrc').strip
+set :nvm_map_bins, %w[node npm yarn rake]
+
+set :assets_dependencies,
+    %w[
+      app/assets lib/assets vendor/assets app/javascript
+      yarn.lock Gemfile.lock config/routes.rb config/initializers/assets.rb
+      .semver
+    ]
+

@@ -30,7 +30,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'auto_logger'
 gem 'slim-rails'
 gem 'socksify'
-gem 'sorcery', '~> 0.14.0'
+gem 'sorcery', '~> 0.15.0'
 gem 'telegram-bot'
 
 # Reduces boot times through caching; required in config/boot.rb
